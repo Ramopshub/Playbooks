@@ -1,0 +1,21 @@
+---
+- name: Deploy application in server
+  hosts: all
+  gather_facts: no
+  become: true
+
+  tasks:
+    - name: httpd installation
+      yum: 
+        name: httpd
+        state: latest
+        
+    - name: Start the services
+      service:
+          name: httpd
+          state: started
+
+    - name: Deploy application
+      copy:
+        src: /opt/Playbooks/index.html
+        dest: /var/www/html 

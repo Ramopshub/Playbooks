@@ -1,0 +1,24 @@
+---
+- hosts : all
+  become: true
+  gather_facts: no
+
+  tasks: 
+  - name: httpd installation
+    yum:
+      name: httpd
+      state: present
+
+
+  - name: Bringup the services
+    service:
+      name: httpd
+      state: started
+
+  - name: Ensure httpd can pass the firewall
+    firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+      immediate: true
+

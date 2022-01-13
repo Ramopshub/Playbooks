@@ -1,0 +1,30 @@
+---
+- name: Notify - Handlers
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: HTTPD Installation
+      yum: 
+       name: httpd
+       state: installed
+
+    - name: Services
+      systemd:
+        name: httpd
+        state: started
+
+    - name: Deploy Application
+      copy:
+         src: /opt/Playbooks/index.html
+         dest: /var/www/html
+      notify: Restart httpd services
+  handlers:
+    - name: Restart httpd services
+      systemd:
+         name: httpd
+         state: restarted
+
+
+

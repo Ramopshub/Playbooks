@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: Combination of install and uninstall packages
+      yum:
+         name: "{{ item.pkg }}"
+         state: "{{ item.setup }}"
+
+      loop:
+        - {pkg: 'git', setup: 'present'}
+        - {pkg: 'tree', setup: 'removed'}
+        - {pkg: 'wget', setup: 'latest'}

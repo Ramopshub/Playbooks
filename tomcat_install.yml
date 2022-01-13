@@ -1,0 +1,36 @@
+---
+- name: Tomcat set-up
+  hosts: all
+  gather_facts: no
+  become: true
+
+  tasks:
+
+  - name: Install Java
+    yum:
+      name: java
+      state: latest
+
+  - name: Download tomcat binaries
+    get_url:
+      url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.zip
+      dest: /opt/apache-tomcat-9.0.56.zip
+      mode: 755
+
+  - name: Extracting the package
+    unarchive:
+      src: /opt/apache-tomcat-9.0.56.zip
+      dest: /opt
+      remote_src: yes
+
+  - name: Changing the premissions
+    file:
+      path: /opt/apache-tomcat-9.0.56
+      mode: 0755
+      recurse: yes
+
+  - name: Start up the tomcat services
+    command: nohup ./startup.sh
+    args:
+      chdir: /opt/apache-tomcat-9.0.56/bin
+

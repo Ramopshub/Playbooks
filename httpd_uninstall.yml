@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: Httpd Installation
+    yum:
+      name: httpd
+      state: absent
+

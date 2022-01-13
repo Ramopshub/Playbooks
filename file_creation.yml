@@ -1,0 +1,9 @@
+---
+- name: create a directory
+  hosts: all
+  become: true
+  tasks:
+  - file:
+     path: /opt/ansible-playbooks
+     state: directory
+     mode: '0755'

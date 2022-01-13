@@ -1,0 +1,54 @@
+---
+- name: Jenkins set-up
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    
+    - name: Java Installation
+      yum: 
+       name: java
+       state: installed
+
+    - name: wget install
+      yum:
+        name: wget
+        state: latest
+
+    - name: downloading the jenkins repo
+      get_url:
+         url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+         dest: /etc/yum.repos.d/jenkins.repo 
+
+    - name: Adding Jenkins key
+      rpm_key:
+         state: present
+         key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+    - name: Add repository
+      yum_repository:
+        name: epel
+        description: EPEL YUM repo
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        gpgcheck: no
+    - name: Jenkins Install
+      yum:
+        name: jenkins
+        state: present
+
+    - name: Services
+      service:
+          name: jenkins
+          state: started
+          enabled: yes
+
+
+
+
+
+
+
+
+
+
+

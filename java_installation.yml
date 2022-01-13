@@ -1,0 +1,11 @@
+---
+- name: Java Installation
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+  - name: Installing Java
+    yum: 
+     name: java
+     state: installed
